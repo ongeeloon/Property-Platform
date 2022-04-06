@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>HDB Price Prediction Form</title>
+<!--	<link rel="stylesheet" type="text/css" media="all" href="../../css/simple.css" th:href="@{/css/simple.css}" />-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/ajaxStreet.js}"></script>
+	<link href="/css/bootstrap4.min.css"  rel="stylesheet">
+	<script src="/js/jquery-1.11.3.min.js"></script>
+	<script src="/js/bootstrap.bundle.min.js" ></script>
+	<link href="/css/general.css" type="text/css" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:insert="fragments/layout.html::navbar"></div>
+	<div id="predictform" style="padding-top: 70px">
+	<h1>HDB Price Prediction Submit Page</h1>
+	<form th:object="${prediction}" th:action="@{/hdbpredict}" method="GET">
+		<span> Size of flat (square feet): </span>
+		<fieldset>
+			<input type="number" min="0" th:field="*{area}" />
+			<p style="color: red;" th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></p>
+		</fieldset>
+		<br>
+		<span>Remaining lease (years): </span>
+		<fieldset>
+			<input type="number" min="0" th:field="*{year}" />
+			<p style="color: red;" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></p>
+		</fieldset>
+		<br>
+		<span>Storey: </span>
+		<fieldset>
+			<input type="number" min="0" th:field="*{storey}" />
+			<p style="color: red;" th:if="${#fields.hasErrors('storey')}" th:errors="*{storey}"></p>
+		</fieldset>
+		<br>
+		<span>Town: </span>
+		<fieldset>
+			<select name="town" id="town">
+				<option value="" selected="selected">Select town</option>
+				<option th:each="twn : ${towns}" th:value="${twn}" th:text="${twn}"></option>
+			</select >
+			<p style="color: red;" th:if="${#fields.hasErrors('town')}" th:errors="*{town}"></p>
+		</fieldset>
+		<br>
+		<span>Street: </span>
+		<fieldset>
+			<select name="street" id="street">
+				<option value="" selected="selected">Select street</option>
+			</select>
+			<p style="color: red;" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></p>
+		</fieldset>
+		<br>
+
+		<input type="submit" value="Predict" />
+		&nbsp;
+		<input type="reset" value="Reset" />
+
+	</form>
+	</div >
+	
+	<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+
+</html>

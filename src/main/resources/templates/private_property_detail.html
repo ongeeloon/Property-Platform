@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction Details</title>
+    <link th:href="@{/bootstrap.css}" rel="stylesheet" />
+    <script th:src="@{/js/echarts.min.js}"></script>
+    <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+    <link href="/css/bootstrap4.min.css"  rel="stylesheet">
+    <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js" ></script>
+    <link href="/css/general.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/layout.html :: navbar"></div>
+<h1 th:text = "${projectName.projectName}" style="padding-top: 70px"></h1>
+<!--create the line chart div, the chart is a price:contractTime line chart-->
+<div id="linechart" style="width: 100%;height: 500px"></div>
+<!--the JS for this linechart-->
+<script>
+    $(document).ready(function(){
+        var projectName = document.getElementById("project_name").value;
+        // prepare dom and init echart instance
+        var myChart = echarts.init(document.getElementById('linechart'));
+        // loading animation
+        myChart.showLoading();
+        var date=[];    //x Axis
+        var price=[];    //y Axis
+        $.ajax({
+            type : "get",
+            async : true,            //make it async
+            url : "/echarts/linechart/"+projectName,    //the controller method that get the json
+            data : {},
+            dataType : "json",
+            success : function(result) {
+                //when success
+                if (result) {
+                    for(var i=0;i<result.length;i++){
+                        date.push(result[i].contractTime.substring(0,7));
+                        price.push(result[i].price);
+                    }
+                    myChart.hideLoading();    //stop animation
+                    myChart.setOption({        //set the chart
+                        title:{
+                            text:"Property Price(Per Sqrt Price) and Contract Date Line Chart"
+                        },
+                        tooltip: {},
+                        xAxis: {
+                            type: 'category',
+                            data: date
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+
+                            type: 'line',
+                            data: price
+                        }]
+                    });
+                }
+            },
+            error : function(errorMsg) {
+                //when request fail
+                alert("Request the Json fail");
+                myChart.hideLoading();
+            }
+        });//end ajax
+    });
+</script>
+<!--hidden area just to provide project name from thymeleaf to JS-->
+<input id="project_name" type="hidden" th:value="${projectName.projectName}" />
+<div>
+    <h3>Filter</h3>
+    <a th:href="'/privateProperty/transactionDetail'+'?projectName='+${projectName.projectName}">All</a>
+    <a th:href="'/privateProperty/transactionDetail?'+'&projectName='+${projectName.projectName}+'&sort='+'area'">Area</a>
+    <a th:href="'/privateProperty/transactionDetail?'+'&projectName='+${projectName.projectName}+'&sort='+'contractTime'">Contract Time</a>
+    <a th:href="'/privateProperty/transactionDetail?'+'&projectName='+${projectName.projectName}+'&sort='+'price'">Price</a>
+</div>
+
+<div align="center">
+    <table class="table" border="1">
+        <tr>
+            <th>Area</th>
+            <th>Contract Date</th>
+            <th>Price</th>
+            <th>Property Type</th>
+            <th>Type of Sale</th>
+            <th>Type of Area</th>
+
+        </tr>
+        <tr th:each="transaction:${transactions}">
+
+            <td th:text="${#numbers.formatDecimal(transaction.area,1,'COMMA',2,'POINT')}+'㎡'"></td>
+            <td th:text="${transaction.contractTime}"></td>
+            <td th:text="'S$'+${#numbers.formatDecimal(transaction.price,1,'COMMA',2,'POINT')}"></td>
+            <td th:text="${transaction.propertyType}"></td>
+            <td th:if="${transaction.typeOfSale} eq '1'">New Sale</td>
+            <td th:if="${transaction.typeOfSale} eq '2'">Sub Sale</td>
+            <td th:if="${transaction.typeOfSale} eq '3'">Resale</td>
+            <td th:text="${transaction.typeOfArea}"></td>
+
+        </tr>
+    </table>
+    <div class="modal-footer no-margin-top">
+        <ul class="pagination pull-right no-margin">
+
+            <!-- First page -->
+            <li>
+                <a th:href="'/privateProperty/transactionDetail?pageNum=0'+'&projectName='+${projectName.projectName}+'&sort='+${projectName.sort}">FirstPage</a>
+            </li>
+
+            <!-- Previous -->
+            <li th:if="${transactions.hasPrevious()}">
+                <a th:href="'/privateProperty/transactionDetail?pageNum=' + ${transactions.previousPageable().getPageNumber()} + '&projectName='+${projectName.projectName}+'&sort='+${projectName.sort}" th:text="Previous"></a>
+            </li>
+
+            <!-- Next -->
+            <li th:if="${transactions.hasNext()}">
+                <a th:href="'/privateProperty/transactionDetail?pageNum=' + ${transactions.nextPageable().getPageNumber()} + '&projectName='+${projectName.projectName}+'&sort='+${projectName.sort}" th:text="Next"></a>
+            </li>
+
+            <!-- Last Page -->
+            <li>
+                <a th:href="'/privateProperty/transactionDetail?pageNum=' + ${transactions.getTotalPages() - 1}+ '&projectName='+${projectName.projectName}+'&sort='+${projectName.sort}">LastPage</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+</html>

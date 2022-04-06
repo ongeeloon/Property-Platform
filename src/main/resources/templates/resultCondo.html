@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Condo Price Prediction Result Page</title>
+	<link rel="stylesheet" type="text/css" media="all" href="../../css/simple.css" th:href="@{/css/simple.css}" />
+	<link href="/css/bootstrap4.min.css"  rel="stylesheet">
+	<script src="/js/jquery-1.11.3.min.js"></script>
+	<script src="/js/bootstrap.bundle.min.js" ></script>
+	<link href="/css/general.css" type="text/css" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:insert="fragments/layout.html::navbar"></div>
+	<h1 style="padding-top: 70px">Condo Predicted Price</h1>
+	
+	<p>At <strong><span th:if="${tenure == 'freehold'}" th:text="${tenure}"></span ></strong> project <strong><span th:text="${project}">MARINA BAY RESIDENCES</span></strong> in district <strong><span th:text="${district}">01</span></strong></p>
+	<p>Based on size of <span th:text="${area}">0</span> square feet,<span th:unless="${tenure == 'freehold'}"> remaining lease of 
+	<span th:text="${tenure}"></span> years,</span > and at level <span th:text="${floorRange}">1</span></p>
+	
+	<p>The predicted price is <strong>$<span th:utext="${result}">1000000</span ></strong>.</p>
+	
+	<p><a th:href="@{/condoform}">Submit another prediction</a></p>
+	
+	<div th:insert="fragments/layout.html::footer"></div>
+	
+</body>
+
+</html>

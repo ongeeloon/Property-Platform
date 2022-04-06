@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SpaceTab Property</title>
+    <link th:href="@{/style.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/javascript.js}"></script>
+    <link href="/css/bootstrap4.min.css"  rel="stylesheet">
+    <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js" ></script>
+    <link href="/css/general.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/layout.html :: navbar"></div>
+<div style="padding: 10px">
+<h1>Property Heat Map - HDB Resale Flats</h1>
+    </br>
+    <h2>Heatmap Toggles</h2>
+    <h4>Past Transaction Periods</h4>
+    <p id="currentToggleSelection"></p>
+    <Button onClick="toggleHeatMap(0,'All')">All Time</Button>
+    <Button onClick="toggleHeatMap(3,'Three')">Past 3 months</Button>
+    <Button onClick="toggleHeatMap(6,'Six')">Past 6 months</Button>
+    <Button onClick="toggleHeatMap(9,'Nine')">Past 9 months</Button>
+    <Button onClick="toggleHeatMap(12,'Twelve')">Past 12 months</Button>
+    </div>
+</br></br>
+<div id="map"></div>
+<div>
+    <ul class="legend">
+        <li><span class="Low"></span> S$500 Psf & Below</li>
+        <li><span class="Medium"></span> Between S$500 to S$600 Psf</li>
+        <li><span class="High"></span> S$600 and Above Psf</li>
+    </ul>
+</div>
+</br>
+</br>
+<div style="padding: 10px">
+    <h2>Filters</h2>
+    <h4>By Flat Type</h4>
+    <Button onClick="filterByFlatType(null)">All</Button>
+    <Button onClick="filterByFlatType('2 ROOM')">2 Room</Button>
+    <Button onClick="filterByFlatType('3 ROOM')">3 Room</Button>
+    <Button onClick="filterByFlatType('4 ROOM')">4 Room</Button>
+    <Button onClick="filterByFlatType('5 ROOM')">5 Room</Button>
+    <Button onClick="filterByFlatType('EXECUTIVE')">Executive</Button>
+</div>
+<div style="padding: 10px">
+    <h3>Past Property Transaction Information</h3>
+    <p id="averagePrice"></p>
+    <p id="lowestPrice"></p>
+    <p id="highestPrice"></p>
+    <h3 id="town"></h3>
+    <p id="totalResults"></p>
+    <div id="selectBlock"></div>
+    <div id="selectStreetName"></div>
+    <div id="amenitiesPage"></div>
+    <table id="pastTransactions"></table>
+    <div id="testPage"></div>
+
+</div>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxif8kuZn2YyE3g-XcPoQS28Hd_K8IgWM&callback=initMap"></script>
+<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+</html>
+
+
+

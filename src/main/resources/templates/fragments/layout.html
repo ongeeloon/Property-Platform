@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--HTML Head Fragment-->
+
+<head th:fragment="html_head" id="html_head">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link href="/css/bootstrap4.min.css" rel="stylesheet">
+    <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <link href="/css/general.css" type="text/css" rel="stylesheet"/>
+
+</head>
+
+<body style="margin: 0 auto;padding: 0" >
+<!--Navigation Bar Fragment-->
+<div th:fragment="navbar" id="navbar" style="position: relative">
+    <nav class="myNavbar" style="z-index: 2">
+        <ul>
+            <a class="navbar-brand" th:href="@{/}">
+                <img th:src="@{/images/logowords.png}" width="150" height="45" alt=""></a>
+            <li>
+                <a th:href="@{/}">Home</a></li>
+            <li>
+                <a href="#">Map</a>
+                <ul>
+                    <li><a th:href="@{/}">HDB HeatMap</a></li>
+                    <li><a th:href="@{/privateProperty}">Private Property HeatMap</a></li>
+                </ul>
+            </li>
+            <li>
+                <a th:href="@{/forsale/listings}">Listings For Sale</a></li>
+            <li>
+                <a href="#">Price Predictor</a>
+                <ul>
+                    <li><a th:href="@{/hdbform}">HDB</a></li>
+                    <li><a th:href="@{/condoform}">Condominium</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">My Account</a>
+                <ul>
+                    <li><a th:href="@{/index}">User Center</a></li>
+                    <li><a th:href="@{/property/allmylistings}">My Listings</a></li>
+                </ul>
+            </li>
+            <div style="float: right">
+                        <div sec:authorize="isAuthenticated()">
+                            <ol>
+                                <a th:href="@{/logout}">Logout</a>
+                                <a>Welcome <span sec:authentication="principal.username"></span></a>
+                            </ol>
+                        </div>
+                        <div sec:authorize="isAnonymous()">
+                            <ol>
+                            <a th:href="@{/registration}">Sign Up</a>
+                            <a th:href="@{/consumer}">Login</a>
+                            </ol>
+                        </div>
+
+            </div>
+
+        </ul>
+    </nav>
+</div>
+
+
+<!--Banner Fragment-->
+<div th:fragment="banner" id="banner">
+
+	</div>
+
+	<!--Footer Fragment-->
+	<footer class="myFooter" th:fragment="footer">
+		<p>&copy; 2022 www.spacetab.com</p>
+	</footer>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+
+<head th:insert="fragments/layout.html::html_head">
+    <title>Edit Property Listing</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/layout.html :: navbar"></div>
+
+<h1 style="margin-top: 100px">Update Property Listing</h1>
+<form method="POST" th:action="@{/property/editlisting/} + ${propertylisting.id}" th:object="${propertylisting}"
+      enctype="multipart/form-data">
+    <fieldset>
+        <input type="hidden" th:field="${propertylisting.id}" />
+    </fieldset>
+    <fieldset>
+        <input type="hidden" th:field="${propertylisting.userId}" />
+    </fieldset>
+
+    <fieldset>
+        PROPERTY TYPE:
+        <select name="housingType">
+            <option th:each="Opt : ${T(com.example.team5ad.entity.HousingType).values()}" th:value="${Opt}"
+                    th:text="${Opt.housingType}"></option>
+        </select>
+        <p th:if="${#fields.hasErrors('housingType')}" th:errors="*{housingType}"></p>
+    </fieldset>
+    <fieldset>
+        DISTRICT LOCATION:
+        <select name="districtLocation">
+            <option th:each="Opt : ${T(com.example.team5ad.entity.DistrictLocation).values()}" th:value="${Opt}"
+                    th:text="${Opt.district}"></option>
+        </select>
+        <p th:if="${#fields.hasErrors('districtLocation')}" th:errors="*{districtLocation}"></p>
+    </fieldset>
+    <fieldset>
+        ADDRESS:
+        <input type="text" th:field="*{address}" />
+        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+    </fieldset>
+    <fieldset>
+        SIZE (SQFT):
+        <input type="number" th:field="*{size}" />
+        <p th:if="${#fields.hasErrors('size')}" th:errors="*{size}"></p>
+    </fieldset>
+    <fieldset>
+        ASKING PRICE (S$):
+        <input type="number" th:field="*{askingPrice}" />
+        <p th:if="${#fields.hasErrors('askingPrice')}" th:errors="*{askingPrice}"></p>
+    </fieldset>
+    <fieldset>
+        PRICE NEGOTIABLE?
+        <input type="checkbox" th:field="*{priceNegotiable}" />
+    </fieldset>
+    <fieldset>
+        DESCRIPTION:
+        <textarea th:field="*{description}" />
+    </fieldset>
+
+    <table>
+        <tr>
+            <td>Image</td>
+            <td>Remove from Listing</td>
+        </tr>
+        <div th:each="image, status: ${imageStrings}">
+            <tr th:id="'image-card' + ${status.count}">
+                <td><img th:src="@{${image}}" style="width: 100px;height:100px;"/></td>
+                <td>
+                    <a th:data-plid="${propertylisting.getId()}" th:data-imagePath="${image}" th:data-row="${status.count}" th:onclick="deleteImageFromListing2(this.getAttribute('data-plid'), this.getAttribute('data-imagePath'), this.getAttribute('data-row'))" class="btn btn-secondary mt-auto deleteButton" >Remove</a>
+                </td>
+            </tr>
+        </div>
+    </table>
+
+    <h6>Upload new photos for listing</h6>
+    <p>Max upload size: 5MB</p>
+    <fieldset>
+        <input id="uploadFile" type="file" name="files" accept="image/png, image/jpeg" multiple/>
+    </fieldset>
+
+    <br>
+
+    <fieldset>
+        <button id="imageSubmitButton" type="submit" class="btn btn-primary" value="SAVE" >SAVE</button>
+
+    </fieldset>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/js/propertylisting.js}"></script>
+
+</body>
+</html>

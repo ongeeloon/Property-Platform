@@ -1,0 +1,123 @@
+
+.myNavbar{
+    background-color: #ffa500;
+}
+.myNavbar:after{
+    content:'';
+    clear:both;
+    display: block;
+}
+
+.myNavbar ul{
+     list-style: none;
+     margin: 0;
+ }
+
+.myNavbar > ul > li{
+    float:left;
+    position:relative;
+}
+
+.myNavbar ul li a{
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    display: block;
+    width: 160px;
+}
+
+.myNavbar ul li:hover a{
+    background: #232526;
+    z-index: 999;
+}
+
+.myNavbar ul ul {
+    position: absolute;
+    padding: 0;
+    width:160px;
+    display: none;
+    top: 100%;
+    left:0;
+}
+
+.myNavbar ul li:hover>ul{
+    z-index: 999;
+    display: block;
+}
+
+.myNavbar ul ul li:hover a{
+    z-index: 999;
+    background: #232526;
+    color: lightgrey;
+
+}
+
+.myNavbar ul ul ul {
+    top:0;
+    left:100%;
+}
+
+.myNavbar ul ul ul li:hover a{
+    z-index: 999;
+    background: #232526;
+}
+
+.myNavbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+
+.myNavbar a:hover {
+    z-index: 999;
+    color: white;
+}
+
+
+.btn-primary {
+    color:#fff;
+    background-color:#ffa500;
+    border-color:#ffa500;
+}
+
+.btn-primary:hover{
+    color:#fff;
+    background-color:#fab62b;
+    border-color:#ffa500;
+}
+
+btn.disabled,.btn:disabled{
+    opacity:.65;
+    background-color:darkslategrey;
+    color: darkgrey;
+    border-color: darkslategrey;
+}
+
+btn:disabled:hover{
+
+    border-color: darkslategrey;
+}
+
+#predictform{
+	margin:auto;
+	width:95%;
+}
+
+.myFooter{
+    background: #232526;
+    position: relative;
+    padding: 10px 10px 10px 10px;
+    bottom: 0;
+    width: 100%;
+}
+.myFooter p{
+    text-align: center;
+    color:white;
+    font-size: 12px;
+}

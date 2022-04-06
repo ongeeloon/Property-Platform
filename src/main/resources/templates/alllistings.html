@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org http://www.w3.org/1999/html">
+<head th:insert="fragments/layout.html :: html_head">
+    <title>For Sale Listings</title>
+    <script th:src="@{/js/propertylisting.js}"></script>
+</head>
+
+
+<body>
+    <div th:replace="fragments/layout.html :: navbar"></div>
+
+	
+    <!--Sort buttons-->
+    <div>&nbsp;</div>
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <p>Sort by:</p>
+                <a th:href="@{'/forsale/listings/page/'+ ${currentpage} + '?sortField=asking_price&sortDir=asc' + '&keyword=' + ${keyword}}">
+                    <button type="button" class="btn btn-outline-secondary">Price (Lowest)</button></a>
+                <a th:href="@{'/forsale/listings/page/'+ ${currentpage} + '?sortField=asking_price&sortDir=desc' + '&keyword=' + ${keyword}}">
+                    <button type="button" class="btn btn-outline-secondary">Price (Highest) </button></a>
+                <a th:href="@{'/forsale/listings/page/'+ ${currentpage} + '?sortField=id&sortDir=desc' + '&keyword=' + ${keyword}}">
+                    <button type="button" class="btn btn-outline-secondary">Newest</button></a>
+                <a th:href="@{'/forsale/listings/page/'+ ${currentpage} + '?sortField=id&sortDir=asc' + '&keyword=' + ${keyword}}">
+                    <button type="button" class="btn btn-outline-secondary">Oldest</button></a>
+            </div>
+        </div>
+        </div>
+        <div>&nbsp;</div>
+
+    <!--Listings-->
+        <div>&nbsp;</div>
+
+        <div th:unless="${#lists.isEmpty(listings)}">
+            <div class="container">
+                <div class="row">
+                    <div class="col" th:each="property, interstat : ${listings}">
+                        <div class="row align-items-center justify-content-center">
+                        <div class="card" style="width: 40rem;" >
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div th:each="image, iterstat : ${imageMap.get(property.getId())}" th:class="${iterstat.index}== 0  ? 'carousel-item active':'carousel-item'">
+                                        <img th:src="@{${image}}"  class="d-block w-100" alt="...">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${property.address}"></h5>
+                                <p class="card-text" th:text="${property.description}"></p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" th:text="${property.housingType.getHousingType()}"></li>
+                                <li class="list-group-item" th:text="'District '+${property.districtLocation.getDistrict()}"></li>
+                                <li class="list-group-item" th:text="${#numbers.formatInteger(property.size, 3, 'COMMA')} +' sqft'"></li>
+                                <li class="list-group-item" th:text="'S$ '+ ${#numbers.formatInteger(property.askingPrice, 3, 'COMMA')}"></li>
+                                <li class="list-group-item"
+                                    th:text="'Posted By: ' + ${users[interstat.index].firstName} + '  -  Mobile: ' + ${users[interstat.index].mobile} "></li>
+
+                            </ul>
+                            <div class="card-body">
+                                <a href="javascript:void(0)" th:onclick="|addWishList(${property.id})|" class="btn btn-primary">Add To Wishlist</a>
+                                <a th:href="'/amenity/' + ${property.address}" class="btn btn-secondary" >Amenity</a>
+                            </div>
+                        </div>
+                        </div>
+                        <div>&nbsp;</div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!--Pagination-->
+    <div >&nbsp;</div>
+    <div>
+        <p class="row align-items-center justify-content-center" th:text="'Total Listings: ' + ${totalitems}"></p>
+        <p class="row align-items-center justify-content-center" th:text="'Page ' + ${currentpage} + ' of ' + ${totalpages}"></p>
+
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a th:if="${currentpage > 1}" th:href="@{'/forsale/listings/page/1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                            <button type="button" class="btn btn-outline-secondary">First</button></a>
+                                <span th:unless="${currentpage > 1}">
+                                    <button type="button" class="btn btn-outline-secondary">First</button></span>
+                        <a th:if="${currentpage > 1}" th:href="@{'/forsale/listings/page/' + ${currentpage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                            <button type="button" class="btn btn-outline-secondary">Previous</button></a>
+                                <span th:unless="${currentpage > 1}">
+                                    <button type="button" class="btn btn-outline-secondary">Previous</button></span>
+                        <div>
+                        <span th:each="i:${#numbers.sequence(1, totalpages)}">
+                            <a th:if="${ i != currentpage}" th:href="@{'/forsale/listings/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" >
+                                <button type="button" class="btn btn-outline-secondary" th:text="${i}"></button></a>
+                                    <span th:unless="${ i != currentpage}">
+                                      <button type="button" class="btn btn-outline-secondary" th:text="${i}"></button></span>
+                        </span>
+                        </div>
+                        <a th:if="${currentpage < totalpages}" th:href="@{'/forsale/listings/page/' + ${currentpage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                            <button type="button" class="btn btn-outline-secondary">Next</button></a>
+                            <span th:unless="${currentpage < totalpages}" >
+                                <button type="button" class="btn btn-outline-secondary">Next</button>
+                            </span>
+
+
+                        <a th:if="${currentpage < totalpages}" th:href="@{'/forsale/listings/page/' + ${totalpages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                            <button type="button" class="btn btn-outline-secondary">Last</button>
+                        </a>
+                            <span th:unless="${currentpage < totalpages}">
+                                <button type="button" class="btn btn-outline-secondary">Last</button></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+ <div th:insert="fragments/layout.html::footer"></div>
+
+
+    <script>
+        function addWishList(propertyId) {
+            window.location.href="/wish/addWish?propertyId=" + propertyId;
+        }
+    </script>
+
+</body>
+</html>

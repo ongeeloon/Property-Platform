@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+
+<head th:insert="fragments/layout.html::html_head">
+    <title>Listing Successfully Added</title>
+</head>
+<body>
+<div th:replace="fragments/layout.html :: navbar"></div>
+
+    <h1 style="padding-top: 100px">Your listing has been successfully updated!</h1>
+    <h2>Listing Details</h2>
+    <table>
+        <tr>
+            <td>Property Type</td>
+            <td th:text="${propertylisting.housingType.getHousingType()}">Property Type</td></tr>
+        <tr>
+            <td>Location District</td>
+            <td th:text="${propertylisting.districtLocation.getDistrict()}">Location District</td></tr>
+        <tr>
+            <td>Address</td>
+            <td th:text="${propertylisting.address}">Address</td></tr>
+        <tr>
+            <td>Size (Sqft)</td>
+            <td th:text="${#numbers.formatInteger(propertylisting.size, 3, 'COMMA')}">Size (Sqft)</td></tr>
+        <tr>
+            <td>Asking Price (S$)</td>
+            <td th:text="${#numbers.formatInteger(propertylisting.askingPrice, 3, 'COMMA')}">Asking Price</td ></tr>
+        <tr>
+            <td>Price Negotiable?</td>
+            <td th:text="${propertylisting.priceNegotiable} == true ? 'Negotiable' : 'Non Negotiable'">Price Negotiable?</td></tr>
+        <tr>
+            <td>Description</td>
+            <td th:text="${propertylisting.description}">Description</td></tr>
+        <tr>
+            <td>Photos</td>
+            <td><img th:each="image: ${images}" th:src="@{${image}}" style="width: 100px;height:100px;"/></td></tr>
+
+    </table>
+    <a th:href="@{/property/allmylistings}"><input type="button" class="btn btn-secondary" value="VIEW ALL MY LISTINGS"/></a>
+    <a href="listingform.html" th:href="@{/property/newlistingform}"><input type="button" class="btn btn-primary" value="ADD ANOTHER LISTING"/></a>
+
+
+</body>
+</html>
+
+

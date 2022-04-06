@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/layout.html :: html_head">
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+</head>
+<body>
+<div th:insert="fragments/layout.html :: navbar"></div>
+<div style="text-align: center; width: 100%;padding-top: 100px">
+    <div style="width: 600px; margin: 0 auto">
+        <div id="test1" class="layui-carousel">
+            <div carousel-item>
+                <img style="width: 600px;margin-top: 20px" th:each="image:${imageList}" th:src="${image}" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+        <div style="display:none" id="propertyId" th:text="${property.id}"></div>
+        <div style="font-size: 20px" id="description"  th:text="${property.description}"></div>
+        <div style="font-size: 20px" th:text="'House Type: '+${property.housingType}"></div>
+        <div style="font-size: 20px" th:text="'District Location: '+${property.districtLocation}"></div>
+        <div style="font-size: 20px" th:text="'Property Size: '+${property.size}"></div>
+        <div style="font-size: 20px" th:text="'Price: '+${property.askingPrice}"></div>
+        <div style="font-size: 20px" th:text="'Price Negotiable: '+${property.priceNegotiable}"></div>
+        <button style="margin-bottom: 20px" th:onclick="|removeWish(${property.id})|"type="button" class="layui-btn layui-btn-normal">remove from wishlist</button>
+
+    </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            ,height: '400px'
+        });
+    });
+
+    var arrStr = localStorage.getItem("historyList");
+    console.log(arrStr);
+    var arr;
+    if (arrStr == null) {
+        arr = [];
+    } else {
+        arr = eval('(' + arrStr + ')')
+    }
+    var obj = {};
+    var id = document.getElementById("propertyId").innerText;
+    var description = document.getElementById("description").innerText;
+    obj.id = id;
+    obj.description = description;
+    arr.unshift(obj);
+    localStorage.setItem("historyList", JSON.stringify(arr));
+
+    function removeWish(propertyId) {
+        window.location.href="/wish/removeWish?propertyId=" + propertyId;
+    }
+
+</script>
+<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+</html>

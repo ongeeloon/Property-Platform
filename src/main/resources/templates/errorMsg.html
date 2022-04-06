@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Prediction Error</title>
+<!--	<link rel="stylesheet" type="text/css" media="all" href="../../css/simple.css" th:href="@{/css/simple.css}" />-->
+	<link href="/css/bootstrap4.min.css"  rel="stylesheet">
+	<link href="/css/general.css" type="text/css" rel="stylesheet"/>
+</head >
+
+<body>
+	<nav th:insert="fragments/layout.html::navbar"></nav>
+	<h1>Error</h1>
+	
+	<p><span th:utext="${result}">Error</span >. Please check your inputs and submit another request.</p>
+
+	<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+
+</html>

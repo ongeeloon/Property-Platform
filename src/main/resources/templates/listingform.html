@@ -1,0 +1,73 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+
+<head th:insert="fragments/layout.html::html_head">
+    <title>Property Listing Form</title>
+</head>
+
+<body>
+<div th:replace="fragments/layout.html :: navbar"></div>
+<div class="container"style="padding-top: 100px">
+<h1 class="mt-3 mb-3">Add Property Listing</h1>
+<form method="POST" th:action="@{/property/addnewlisting}" th:object="${propertylisting}">
+    <fieldset>
+        <input type="hidden" th:field="*{id}" />
+    </fieldset>
+    <fieldset>
+        <input type="hidden" th:field="*{userId}" />
+    </fieldset>
+    <fieldset>
+        PROPERTY TYPE:
+        <select name="housingType">
+            <option th:each="Opt : ${T(com.example.team5ad.entity.HousingType).values()}" th:value="${Opt}"
+                    th:text="${Opt.housingType}"></option>
+        </select>
+        <p th:if="${#fields.hasErrors('housingType')}" th:errors="*{housingType}"></p>
+    </fieldset>
+    <fieldset>
+        DISTRICT LOCATION:
+        <select name="districtLocation">
+            <option th:each="Opt : ${T(com.example.team5ad.entity.DistrictLocation).values()}" th:value="${Opt}"
+                    th:text="${Opt.district}"></option>
+        </select>
+        <p th:if="${#fields.hasErrors('districtLocation')}" th:errors="*{districtLocation}"></p>
+    </fieldset>
+    <fieldset>
+        ADDRESS:
+        <input type="text" th:field="*{address}" />
+        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+    </fieldset>
+    <fieldset>
+        SIZE (SQFT):
+        <input type="number" th:field="*{size}" />
+        <p th:if="${#fields.hasErrors('size')}" th:errors="*{size}"></p>
+    </fieldset>
+    <fieldset>
+        ASKING PRICE (S$):
+        <input type="number" th:field="*{askingPrice}" />
+        <p th:if="${#fields.hasErrors('askingPrice')}" th:errors="*{askingPrice}"></p>
+    </fieldset>
+    <fieldset>
+        PRICE NEGOTIABLE?
+        <input type="checkbox" th:field="*{priceNegotiable}" />
+    </fieldset>
+    <fieldset>
+        DESCRIPTION:
+        <textarea th:field="*{description}" />
+    </fieldset>
+
+
+    <fieldset>
+        <input type="reset" class="btn btn-secondary" value="RESET" />
+        <input type="submit" class="btn btn-primary" value="NEXT" /></a>
+
+    </fieldset>
+</form>
+</div>
+
+
+</body>
+</html>

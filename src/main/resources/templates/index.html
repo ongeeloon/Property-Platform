@@ -1,0 +1,142 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/layout.html :: html_head">
+    <meta charset="UTF-8">
+    <title>首页</title>
+
+</head>
+<style>
+    * {
+        margin: 0;
+    }
+    .banner {
+        height: 400px;
+        width: 50%;
+        margin: 0 auto;
+    }
+    .menu {
+        height: 60px;
+        width: 100%;
+        border-style:solid;
+        border-width:1px;
+        border-left: none;
+        border-right: none;
+    }
+    .menu > div {
+        display: inline-block;
+        height: 60px;
+        margin: 0 20px;
+        font-size: 20px;
+        line-height: 60px;
+        cursor: pointer;
+    }
+    .shop-content {
+        content: "";
+        line-height: 0;
+        display: block;
+        clear: both;
+
+    }
+    .shop-content .content-left {
+        width: 1200px;
+        float: left;
+        height: 600px;
+        background-color: #0000FF;
+
+    }
+    .shop-content .content-right {
+        overflow: hidden;
+        height: 600px;
+        background-color: #FFFF00;
+        overflow-y: auto;
+    }
+    .content-right > div {
+        text-align: center;
+        height: 40px;
+        font-size: 20px;
+        line-height: 40px;
+        cursor: pointer;
+    }
+    .content-right > div:hover {
+        background-color: #00F7DE;
+    }
+</style>
+<body >
+
+<div class="header" ><div th:insert="fragments/layout.html :: navbar"></div></div>
+<div class="banner" style="padding-top: 70px"/>
+    <div class="layui-carousel" id="test1"style="z-index:1">
+        <div carousel-item >
+            <div th:each="image:${imageList}" >
+                <img th:src="${image}" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content"style="margin-top: 70px">
+    <div class="menu">
+        <div onclick="window.location.href='/'">Home</div>
+        <div onclick="window.location.href='/wish/wishList'">Favorite</div>
+        <div onclick="window.location.href='/forsale/listings'">Find</div>
+        <div  th:if="${session.user.type == 'BUSINESS'}" onclick="window.location.href='/property/allmylistings'">My Property</div>
+        <div  th:if="${session.user.type == 'BUSINESS'}" onclick="window.location.href='/property/newlistingform'">Add Property</div>
+
+    </div>
+    <div class="shop-content">
+        <div class="content-left">
+            <div class="layui-carousel" id="test2">
+                <div carousel-item>
+                    <div th:each="wish:${wishList}">
+                        <div th:each="image, iterstat : ${imageMap.get(wish.propertyListing.getId())}" th:class="${iterstat.index}== 0  ? 'carousel-item active':'carousel-item'">
+                            <img th:src="${image}" class="d-block w-100" alt="...">
+                        </div>
+                        <div style="font-size: 20px" th:text="${wish.propertyListing.description}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-right">
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            ,height: '400px'
+            //,anim: 'updown' //切换动画方式
+        });
+
+        carousel.render({
+            elem: '#test2'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            ,height: '600px'
+            //,anim: 'updown' //切换动画方式
+        });
+    });
+
+    var historyStr = localStorage.getItem("historyList");
+    if (historyStr != null) {
+        var arr = eval('(' + historyStr + ')');
+        var str = "";
+        for(var i = 0; i < arr.length; i++) {
+            str += '<div onclick="propertyDetail(' + arr[i].id + ')">' + arr[i].description.replace(/(.{30}).*/, "$1")+'...'+ '</div>'
+        }
+        document.getElementsByClassName("content-right")[0].innerHTML = str;
+    }
+
+    function propertyDetail(propertyId) {
+        window.location.href="/property/detail?propertyId=" + propertyId;
+    }
+</script>
+
+<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+</html>

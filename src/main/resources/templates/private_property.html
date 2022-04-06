@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Private Property Map</title>
+    <link rel="stylesheet" href="/bootstrap.css">
+    <!--try to just copy js to see the effect-->
+    <script type="text/javascript" th:src="@{/privateProperty.js}"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxif8kuZn2YyE3g-XcPoQS28Hd_K8IgWM&callback=initMap"></script>
+    <link href="/css/bootstrap4.min.css"  rel="stylesheet">
+    <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js" ></script>
+    <link href="/css/general.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/layout.html :: navbar"></div>
+
+<h1 style="padding-top: 70px">Private Property Map</h1>
+<div id="map" style="height: 500px;width: 100%"></div>
+<div>
+    <ul style="list-style: none">
+        <li style="float: left;margin-right: 10px;"><span style="border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px;background-color: #99FFFF;"></span> S$15,000 Psf & Below</li>
+        <li style="float: left;margin-right: 10px;"><span style="border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px;background-color: #33FF33;"></span> Between S$15,000 to S$20,000 Psf</li>
+        <li style="float: left;margin-right: 10px;"><span style="border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px;background-color: #FF0000;"></span> S$20,000 and Above Psf</li>
+    </ul>
+</div>
+</br>
+</br>
+<div>
+    <h2>Project Information</h2>
+</div>
+
+<div>
+    <h3>District Filter</h3>
+    <a th:href="'/privateProperty'">All</a>
+    <a th:href="'/privateProperty?district='+'01'">01</a>
+    <a th:href="'/privateProperty?district='+'02'">02</a>
+    <a th:href="'/privateProperty?district='+'03'">03</a>
+    <a th:href="'/privateProperty?district='+'04'">04</a>
+    <a th:href="'/privateProperty?district='+'05'">05</a>
+    <a th:href="'/privateProperty?district='+'06'">06</a>
+    <a th:href="'/privateProperty?district='+'07'">07</a>
+    <a th:href="'/privateProperty?district='+'08'">08</a>
+    <a th:href="'/privateProperty?district='+'09'">09</a>
+    <a th:href="'/privateProperty?district='+'10'">10</a>
+    <a th:href="'/privateProperty?district='+'11'">11</a>
+    <a th:href="'/privateProperty?district='+'12'">12</a>
+    <a th:href="'/privateProperty?district='+'13'">13</a>
+    <a th:href="'/privateProperty?district='+'14'">14</a>
+    <a th:href="'/privateProperty?district='+'15'">15</a>
+    <a th:href="'/privateProperty?district='+'16'">16</a>
+    <a th:href="'/privateProperty?district='+'17'">17</a>
+    <a th:href="'/privateProperty?district='+'18'">18</a>
+    <a th:href="'/privateProperty?district='+'19'">19</a>
+    <a th:href="'/privateProperty?district='+'20'">20</a>
+    <a th:href="'/privateProperty?district='+'21'">21</a>
+    <a th:href="'/privateProperty?district='+'22'">22</a>
+    <a th:href="'/privateProperty?district='+'23'">23</a>
+    <a th:href="'/privateProperty?district='+'24'">24</a>
+    <a th:href="'/privateProperty?district='+'25'">25</a>
+    <a th:href="'/privateProperty?district='+'26'">26</a>
+    <a th:href="'/privateProperty?district='+'27'">27</a>
+    <a th:href="'/privateProperty?district='+'28'">28</a>
+
+</div>
+<!-- this is default Project table-->
+<div align="center">
+    <table class="table" border="1">
+        <tr>
+            <th>Project</th>
+            <th>District</th>
+            <th>Street</th>
+            <th>Market Segment</th>
+            <th>Total Transaction</th>
+            <th>More</th>
+        </tr>
+        <tr th:each="project:${projects}">
+            <td th:text="${project.project}"></td>
+            <td th:text="${project.district}"></td>
+            <td th:text="${project.street}"></td>
+            <td th:text="${project.marketSegment}"></td>
+            <td th:text="${project.transaction.size()}"></td>
+            <td><a th:href="'/privateProperty/transactionDetail?projectName=' + ${project.project}">Details</a>
+            	<a th:href="'/amenity/' + ${project.project}">Amenity</a></td>
+        </tr>
+    </table>
+    <div class="modal-footer no-margin-top">
+        <ul class="pagination pull-right no-margin">
+
+            <!-- 首页 -->
+            <li>
+                <a th:href="'/privateProperty?pageNum=0'+ '&district='+${district.districtNum}">FirstPage</a>
+            </li>
+
+            <!-- 上一页 -->
+            <li th:if="${projects.hasPrevious()}">
+                <a th:href="'/privateProperty?pageNum=' + ${projects.previousPageable().getPageNumber()} + '&district='+${district.districtNum}" th:text="Previous"></a>
+            </li>
+            <!-- 下一页 -->
+            <li th:if="${projects.hasNext()}">
+                <a th:href="'/privateProperty?pageNum=' + ${projects.nextPageable().getPageNumber()} + '&district='+${district.districtNum}" th:text="Next"></a>
+            </li>
+
+            <!-- 尾页 -->
+            <li>
+                <a th:href="'/privateProperty?pageNum=' + ${projects.getTotalPages() - 1}+ '&district='+${district.districtNum}">LastPage</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+</html>

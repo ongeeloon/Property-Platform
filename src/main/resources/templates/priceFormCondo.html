@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Condo Price Prediction Form</title>
+<!--	<link rel="stylesheet" type="text/css" media="all" href="../../css/simple.css" th:href="@{/css/simple.css}" />-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/ajaxProject.js}"></script>
+	<link href="/css/bootstrap4.min.css"  rel="stylesheet">
+	<script src="/js/jquery-1.11.3.min.js"></script>
+	<script src="/js/bootstrap.bundle.min.js" ></script>
+	<link href="/css/general.css" type="text/css" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:insert="fragments/layout.html::navbar"></div>
+	<div id="predictform"style="padding-top: 70px">
+	<h1>Condo Price Prediction Submit Page</h1>
+
+	<form id="priceform" th:object="${prediction}" th:action="@{/condopredict}" method="GET">
+		<span>Size of condo (square feet): </span>
+		<fieldset>
+			<input type="number" min="0" th:field="*{area}" />
+			<p style="color: red;" th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></p>
+		</fieldset>
+		<br>
+		<span>Lease type: </span>
+		<fieldset>
+			<input type="radio" value="freehold" id="freehold" name="leasetype" /><span>Freehold</span>
+			<input type="radio" value="leasehold" id="leasehold" name="leasetype" checked /><span>Leasehold</span>
+		</fieldset>
+		<br>
+		<span>Remaining lease (years): </span>
+		<fieldset>
+			<input type="number" min="0" th:field="*{tenure}" />
+			<p style="color: red;" th:if="${#fields.hasErrors('tenure')}" th:errors="*{tenure}"></p>
+		</fieldset>
+		<br>
+		<span>Storey: </span>
+		<fieldset>
+			<input type="number" min="0" th:field="*{floorRange}" />
+			<p style="color: red;" th:if="${#fields.hasErrors('floorRange')}" th:errors="*{floorRange}"></p>
+		</fieldset>
+		<br>
+		<span>District: </span>
+		<fieldset>
+			<select name="district" id="district">
+				<option value="" selected="selected">Select district</option>
+				<option th:each="dis : ${districts}" th:value="${dis}" th:text="${dis}"></option>
+			</select>
+			<p style="color: red;" th:if="${#fields.hasErrors('district')}" th:errors="*{district}"></p>
+		</fieldset>
+		<br>
+		<span>Project: </span>
+		<fieldset>
+			<select name="project" id="project">
+				<option value="" selected="selected">Select project</option>
+			</select>
+			<p style="color: red;" th:if="${#fields.hasErrors('project')}" th:errors="*{project}"></p>
+		</fieldset>
+		<br>
+
+		<input type="submit" value="Predict" />
+		&nbsp;
+		<input type="reset" value="Reset" />
+	</form>
+	</div>
+	
+	<div th:insert="fragments/layout.html::footer"></div>
+
+</body>
+
+</html>
